@@ -7,6 +7,24 @@ function criaLi() {
   return li;
 }
 
+function criaBotoes(li) {
+  const divBotoes = document.createElement("div");
+
+  const botaoRiscar = document.createElement("button");
+  botaoRiscar.innerText = "Riscar";
+  botaoRiscar.classList.add("riscar");
+  botaoRiscar.setAttribute("title", "Riscar essa tarefa");
+  divBotoes.appendChild(botaoRiscar);
+
+  const botaoApagar = document.createElement("button");
+  botaoApagar.innerText = "Apagar";
+  botaoApagar.classList.add("apagar");
+  botaoApagar.setAttribute("title", "Apagar essa tarefa");
+  divBotoes.appendChild(botaoApagar);
+
+  li.appendChild(divBotoes);
+}
+
 inputTarefa.addEventListener("keypress", function (e) {
   if (e.keyCode === 13) {
     if (!inputTarefa.value) return;
@@ -19,21 +37,12 @@ function limpaTarefa() {
   inputTarefa.focus();
 }
 
-function criaBotaoApagar(li) {
-  li.innerText += " ";
-  const botaoApagar = document.createElement("button");
-  botaoApagar.innerText = "Apagar";
-  botaoApagar.setAttribute("class", "apagar");
-  botaoApagar.setAttribute("title", "Apagar essa tarefa");
-  li.appendChild(botaoApagar);
-}
-
 function criaTarefa(textoInput) {
   const li = criaLi();
   li.innerText = textoInput;
   tarefas.appendChild(li);
   limpaTarefa();
-  criaBotaoApagar(li);
+  criaBotoes(li);   
   salvarTarefas();
 }
 
@@ -46,7 +55,12 @@ document.addEventListener("click", function (e) {
   const el = e.target;
 
   if (el.classList.contains("apagar")) {
-    el.parentElement.remove();
+    el.parentElement.parentElement.remove(); 
+    salvarTarefas();
+  }
+
+  if (el.classList.contains("riscar")) {
+    el.parentElement.parentElement.classList.toggle("concluida");
     salvarTarefas();
   }
 });
